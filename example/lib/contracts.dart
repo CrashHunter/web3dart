@@ -2,18 +2,18 @@ import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:web_socket_channel/io.dart';
 
-import 'token.g.dart';
+import 'MetaCoin.g.dart';
 
 const String rpcUrl = 'http://localhost:8545';
 const String wsUrl = 'ws://localhost:8545';
 
 const String privateKey =
-    '9a43d93a50b622761d88c80c90567c02c82442746335a01b72f49b3c867c037d';
+    '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
 
 final EthereumAddress contractAddr =
-    EthereumAddress.fromHex('0xeE9312C22890e0Bd9a9bB37Fd17572180F4Fc68a');
+    EthereumAddress.fromHex('0x5FC8d32690cc91D4c39d9d3abcBD16989F875707');
 final EthereumAddress receiver =
-    EthereumAddress.fromHex('0x6c87E1a114C3379BEc929f6356c5263d62542C13');
+    EthereumAddress.fromHex('0x70997970C51812dc3A010C7d01b50e0d17dc79C8');
 
 /*
 Examples that deal with contracts. The contract used here is from the truffle
@@ -66,7 +66,7 @@ Future<void> main() async {
   final ownAddress = await credentials.extractAddress();
 
   // read the contract abi and tell web3dart where it's deployed (contractAddr)
-  final token = Token(address: contractAddr, client: client);
+  final token = MetaCoin(address: contractAddr, client: client);
 
   // listen for the Transfer event when it's emitted by the contract above
   final subscription = token.transferEvents().take(1).listen((event) {
@@ -77,9 +77,10 @@ Future<void> main() async {
   final balance = await token.getBalance(ownAddress);
   print('We have $balance MetaCoins');
 
+  var num = BigInt.from(balance/BigInt.from(2));
   // send all our MetaCoins to the other address by calling the sendCoin
   // function
-  await token.sendCoin(receiver, balance, credentials: credentials);
+  await token.sendCoin(receiver, num, credentials: credentials);
 
   await subscription.asFuture();
   await subscription.cancel();
