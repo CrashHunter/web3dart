@@ -1,0 +1,3 @@
+solc MetaCoin.sol --bin --abi --optimize -o ./
+
+dart run build_runner build
