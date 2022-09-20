@@ -1,3 +1,6 @@
 solc MetaCoin.sol --bin --abi --optimize -o ./
 
+.abi 重命名为.abi.json
+
+cd example
 dart run build_runner build
